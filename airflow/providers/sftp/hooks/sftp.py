@@ -66,7 +66,6 @@ class SFTPHook(SSHHook):
         super().__init__(*args, **kwargs)
 
         self.conn = None
-        self.private_key_pass = None
         self.ciphers = None
 
         # Fail for unverified hosts, unless this is explicitly allowed
@@ -76,8 +75,6 @@ class SFTPHook(SSHHook):
             conn = self.get_connection(self.ssh_conn_id)
             if conn.extra is not None:
                 extra_options = conn.extra_dejson
-                if 'private_key_pass' in extra_options:
-                    self.private_key_pass = extra_options.get('private_key_pass')
 
                 # For backward compatibility
                 # TODO: remove in Airflow 2.1
@@ -141,8 +138,8 @@ class SFTPHook(SSHHook):
                 conn_params['password'] = self.password
             if self.key_file:
                 conn_params['private_key'] = self.key_file
-            if self.private_key_pass:
-                conn_params['private_key_pass'] = self.private_key_pass
+            if self.private_key_passphrase:
+                conn_params['private_key_pass'] = self.private_key_passphrase
 
             self.conn = pysftp.Connection(**conn_params)
         return self.conn

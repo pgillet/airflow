@@ -22,6 +22,8 @@
 ### Features
 
  * `Added support for DSS, ECDSA, and Ed25519 private keys in SSHHook (#12467)`
+ * `private_key_passphrase` local variable in `SSHHook` constructor is now an instance variable for inheritance in
+`SFTPHook`.
 
 ## Release 2021.2.5
 

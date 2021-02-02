@@ -99,6 +99,7 @@ class SSHHook(BaseHook):  # pylint: disable=too-many-instance-attributes
         self.password = password
         self.key_file = key_file
         self.pkey = None
+        self.private_key_passphrase = None
         self.port = port
         self.timeout = timeout
         self.keepalive_interval = keepalive_interval
@@ -131,9 +132,11 @@ class SSHHook(BaseHook):  # pylint: disable=too-many-instance-attributes
                     self.key_file = extra_options.get("key_file")
 
                 private_key = extra_options.get('private_key')
-                private_key_passphrase = extra_options.get('private_key_passphrase')
+                self.private_key_passphrase = extra_options.get('private_key_passphrase')
                 if private_key:
-                    self.pkey = self._pkey_from_private_key(private_key, passphrase=private_key_passphrase)
+                    self.pkey = self._pkey_from_private_key(
+                        private_key, passphrase=self.private_key_passphrase
+                    )
                 if "timeout" in extra_options:
                     self.timeout = int(extra_options["timeout"], 10)
 

@@ -19,6 +19,22 @@
 
 ## Release 2021.3.3
 
+### Features
+
+#### SFTP connection ``private_key_pass`` extra param is renamed to ``private_key_passphrase``
+
+Some operators perform SFTP operations by the means of `SFTPHook`. `SFTPHook` delegates the actual SFTP connection to
+the `pysftp` module.
+
+When connecting with a private key protected by a passphrase, the `private_key_pass` extra parameter had to be
+specified in the connection, and this corresponded to the arguments' naming in `pysftp`.
+
+However, `SFTPHook` inherits from `SSHHook` which already manages a `private_key_passphrase` extra param. But this
+param was unused in favor of the `private_key_pass` param introduced in `SFTPHook`.
+
+For consistency, `private_key_pass` has been dropped in `SFTPHook` and `private_key_passphrase` is well reused.
+This may require updating your SSH connections used to do SFTP.
+
 ### Bug fixes
 
 * `Corrections in docs and tools after releasing provider RCs (#14082)`
